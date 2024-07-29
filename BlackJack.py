@@ -1,17 +1,20 @@
 import random
+import Bet
 
-card_list = ["A", "A", "A", "A", "2", "2", "2", "2", "3", "3", "3", "3"
-    , "4", "4", "4", "4", "5", "5", "5", "5", "6", "6", "6", "6", "7", "7", "7", "7"
+card_list = ["A", "A", "A", "A", "2", "2", "2", "2", "3", "3", "3", "3",
+    "4", "4", "4", "4", "5", "5", "5", "5", "6", "6", "6", "6", "7", "7", "7", "7"
     , "8", "8", "8", "8", "9", "9", "9", "9", "10", "10", "10", "10", "J", "J", "J", "J"
     , "Q", "Q", "Q", "Q", "K", "K", "K", "K"]
 
 dealers_list = []
 users_list = []
-start_button = input("Would you like to play blackjack: ")
 
-#Intialize the game
+
+
+# Initialize the game
 def initialize(start_button):
     if start_button == "yes":
+        Bet.bet_amount()
         counter = 0
         card = ""
         while counter < 4:
@@ -25,20 +28,34 @@ def initialize(start_button):
                 users_list.append(card)
                 card_list.remove(card)
                 counter += 1
+        if is_blackjack(dealers_list):
+            blackjack_loss()
+        elif is_blackjack(users_list):
+            Bet.blackjack_payout()
     else:
         print("Sorry to hear that!")
 
-initialize(start_button)
-print(users_list)
+# User lost when dealer hit blackjack
+def blackjack_loss():
+    print("Dealer hit blackjack, You lose!")
+    print("You now have: " + str(Bet.user_amount))
+    exit()
 
-stand_or_hit = input("Stand or Hit: ")
 
-#Ends the game
+# Determines if someone has hit blackjack
+def is_blackjack(hand):
+    return set(hand) in [{"A", "10"}, {"A", "J"}, {"A", "Q"}, {"A", "K"}]
+
+
+# Ends the game
 def end_game():
     if users_total() > dealers_total():
         print("Congrats, you win!")
+        Bet.payout()
     else:
         print("You lose!")
+        print("You now have: " + str(Bet.user_amount))
+
 
 #Produces the users total
 def users_total():
@@ -53,7 +70,8 @@ def users_total():
             user_total += int(n)
     return user_total
 
- #Produces the dealers total
+
+#Produces the dealers total
 def dealers_total():
     dealer_total = 0
     for n in dealers_list:
@@ -66,10 +84,12 @@ def dealers_total():
     print("Dealer's Total: " + str(dealer_total))
     return dealer_total
 
+
 #User loses the game due to going over 21
 def lose_game():
     print("Bust!")
     exit()
+
 
 #Determines if the user has bust
 def is_bust():
@@ -98,17 +118,3 @@ def stand_and_hit(stand_or_hit):
         stand_and_hit(stand_or_hit)
     else:
         end_game()
-
-stand_and_hit(stand_or_hit)
-
-
-
-
-
-
-
-
-
-
-
-
