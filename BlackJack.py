@@ -28,10 +28,13 @@ def initialize(start_button):
                 users_list.append(card)
                 card_list.remove(card)
                 counter += 1
+        print(users_list)
         if is_blackjack(dealers_list):
             blackjack_loss()
         elif is_blackjack(users_list):
             Bet.blackjack_payout()
+        stand_or_hit = input("Stand or Hit: ")
+        stand_and_hit(stand_or_hit)
     else:
         print("Sorry to hear that!")
 
@@ -39,7 +42,7 @@ def initialize(start_button):
 def blackjack_loss():
     print("Dealer hit blackjack, You lose!")
     print("You now have: " + str(Bet.user_amount))
-    exit()
+    play_again()
 
 
 # Determines if someone has hit blackjack
@@ -52,9 +55,11 @@ def end_game():
     if users_total() > dealers_total():
         print("Congrats, you win!")
         Bet.payout()
+        play_again()
     else:
         print("You lose!")
         print("You now have: " + str(Bet.user_amount))
+        play_again()
 
 
 #Produces the users total
@@ -88,7 +93,7 @@ def dealers_total():
 #User loses the game due to going over 21
 def lose_game():
     print("Bust!")
-    exit()
+    play_again()
 
 
 #Determines if the user has bust
@@ -118,3 +123,15 @@ def stand_and_hit(stand_or_hit):
         stand_and_hit(stand_or_hit)
     else:
         end_game()
+
+# Determines if the user wants to play again
+def play_again():
+    global card_list
+    answer = input("Would you like to play again: ")
+    if answer == "yes":
+        card_list += users_list + dealers_list
+        users_list.clear()
+        dealers_list.clear()
+        initialize(answer)
+    else:
+        print("Sorry to hear that!")

@@ -1,3 +1,5 @@
+import BlackJack
+
 user_amount = 1000
 user_bet_amount = 0
 
@@ -22,6 +24,7 @@ def blackjack_payout():
     global user_bet_amount
     user_amount += user_bet_amount * 2.5
     print("You now have: " + str(user_amount))
+    BlackJack.play_again()
 
 
 
